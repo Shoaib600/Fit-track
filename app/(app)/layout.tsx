@@ -13,8 +13,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Warm the client route bundles so tab changes do not wait on a cold request.
-    ["/home", "/history", "/scan", "/settings"].forEach((path) => router.prefetch(path));
+    // Do not prefetch every screen on mount. It competes with hydration and
+    // makes the first tap feel delayed on slower mobile connections.
   }, [router]);
 
   return (

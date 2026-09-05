@@ -113,14 +113,14 @@ export default function HistoryPage() {
                               <label className="text-[11px] text-text-muted">Meal<select value={draft.meal} onChange={(e) => setDraft({ ...draft, meal: e.target.value as FoodLog["meal"] })} className="mt-1 w-full rounded-lg border border-border bg-surface-2 px-2 py-2 text-sm text-text-primary outline-none"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option></select></label>
                             </div>
                             <div className="flex justify-end gap-2">
-                              <button type="button" onClick={cancelEditing} className="interactive-control rounded-lg p-3 text-text-muted" aria-label="Cancel edit"><X aria-hidden="true" /></button>
-                              <button type="button" onClick={handleUpdate} className="interactive-control rounded-lg bg-accent p-3 text-ink" aria-label="Save edit"><Check aria-hidden="true" /></button>
+                              <button type="button" onClick={cancelEditing} className="interactive-control rounded-lg px-3 py-2 text-sm text-text-muted" aria-label="Cancel edit"><X aria-hidden="true" data-icon="inline-start" /> Cancel</button>
+                              <button type="button" onClick={handleUpdate} className="interactive-control rounded-lg bg-accent px-3 py-2 text-sm font-semibold text-ink" aria-label="Save edit"><Check aria-hidden="true" data-icon="inline-start" /> Save</button>
                             </div>
                           </div>
                         ) : (
                           <div className="flex items-center justify-between gap-3">
                             <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{log.name}</p><p className="text-xs text-text-muted">{log.meal} · {log.quantity}g · P{Math.round(log.protein)} C{Math.round(log.carbs)} F{Math.round(log.fat)}</p></div>
-                            <div className="flex shrink-0 items-center gap-1"><span className="mr-1 text-sm font-medium">{Math.round(log.calories)}</span><button type="button" onClick={() => startEditing(log)} className="interactive-control rounded-lg p-3 text-text-secondary hover:text-accent" aria-label={`Edit ${log.name}`}><Pencil aria-hidden="true" /></button><button type="button" onClick={() => handleDelete(log.id)} className="interactive-control rounded-lg p-3 text-red-400 hover:text-red-300" aria-label={`Delete ${log.name}`}><Trash2 aria-hidden="true" /></button></div>
+                            <div className="flex shrink-0 items-center gap-1"><span className="mr-1 text-sm font-medium">{Math.round(log.calories)}</span><button type="button" onClick={() => startEditing(log)} className="interactive-control rounded-lg px-2.5 py-2 text-xs font-medium text-text-secondary hover:text-accent" aria-label={`Edit ${log.name}`}><Pencil aria-hidden="true" data-icon="inline-start" /> Edit</button><button type="button" onClick={() => handleDelete(log.id)} className="interactive-control rounded-lg px-2.5 py-2 text-xs font-medium text-red-400 hover:text-red-300" aria-label={`Delete ${log.name}`}><Trash2 aria-hidden="true" data-icon="inline-start" /> Delete</button></div>
                           </div>
                         )}
                       </article>
