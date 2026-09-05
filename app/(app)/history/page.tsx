@@ -41,8 +41,9 @@ export default function HistoryPage() {
   }, []);
 
   const startEditing = (log: FoodLog) => {
-    setEditing(log.id);
-    setDraft(toDraft(log));
+    const normalizedId = String(log.id);
+    setEditing(normalizedId);
+    setDraft(toDraft({ ...log, id: normalizedId }));
   };
 
   const cancelEditing = () => {

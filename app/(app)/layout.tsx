@@ -10,7 +10,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!localStorage.getItem("fittrack_user")) {
       router.replace("/login");
+      return;
     }
+
+    // Warm the client route bundles so tab changes do not wait on a cold request.
+    ["/home", "/history", "/scan", "/settings"].forEach((path) => router.prefetch(path));
   }, [router]);
 
   return (

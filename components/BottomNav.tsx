@@ -27,6 +27,7 @@ export default function BottomNav() {
               <Link
                 key={tab.href}
                 href={tab.href}
+                prefetch
                 className="interactive-control relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-ink shadow-lg shadow-accent/30"
               >
                 <Icon className="h-6 w-6" strokeWidth={2.5} />

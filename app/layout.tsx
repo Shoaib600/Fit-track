@@ -12,7 +12,7 @@ export const metadata: Metadata = {
       { url: "/fittrack-logo-small.png", type: "image/png", sizes: "192x192" },
       { url: "/fittrack-logo.png", type: "image/png", sizes: "192x192" },
     ],
-    apple: "/fittrack-logo.png",
+    apple: "/fittrack-logo-small.png",
   },
 };
 
