@@ -19,7 +19,17 @@ export function getLogs(): FoodLog[] {
   if (typeof window === "undefined") return [];
   try {
     const value = JSON.parse(localStorage.getItem("fittrack_logs") || "[]");
-    return Array.isArray(value) ? value : [];
+    if (!Array.isArray(value)) return [];
+    return value.map((log) => ({
+      ...log,
+      id: String(log.id),
+      timestamp: Number(log.timestamp) || 0,
+      calories: Number(log.calories) || 0,
+      protein: Number(log.protein) || 0,
+      carbs: Number(log.carbs) || 0,
+      fat: Number(log.fat) || 0,
+      quantity: Number(log.quantity) || 0,
+    })) as FoodLog[];
   } catch {
     return [];
   }
@@ -35,11 +45,13 @@ export function saveLog(log: FoodLog) {
 }
 
 export function updateLog(id: string, updates: Partial<Omit<FoodLog, "id" | "timestamp">>) {
-  publishLogs(getLogs().map((log) => (log.id === id ? { ...log, ...updates } : log)));
+  const normalizedId = String(id);
+  publishLogs(getLogs().map((log) => (String(log.id) === normalizedId ? { ...log, ...updates } : log)));
 }
 
 export function deleteLog(id: string) {
-  publishLogs(getLogs().filter((l) => l.id !== id));
+  const normalizedId = String(id);
+  publishLogs(getLogs().filter((log) => String(log.id) !== normalizedId));
 }
 
 export function getTodayTotals() {
