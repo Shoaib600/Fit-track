@@ -6,14 +6,10 @@ export default function ServiceWorkerRegister() {
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
 
-    // The app stores logs locally and does not need a worker to intercept requests.
-    // Remove old workers and caches so stale deployments cannot delay interactions.
-    void navigator.serviceWorker.getRegistrations().then(async (registrations) => {
-      await Promise.all(registrations.map((registration) => registration.unregister()));
-      if ("caches" in window) {
-        const keys = await caches.keys();
-        await Promise.all(keys.filter((key) => key.startsWith("fittrack-")).map((key) => caches.delete(key)));
-      }
+    // FitTrack does not cache app requests. Unregister legacy workers without
+    // scanning or deleting caches during startup, which can delay first taps.
+    void navigator.serviceWorker.getRegistrations().then((registrations) => {
+      void Promise.all(registrations.map((registration) => registration.unregister()));
     }).catch(() => undefined);
   }, []);
 

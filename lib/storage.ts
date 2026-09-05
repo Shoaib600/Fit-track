@@ -48,6 +48,7 @@ function publishLogs(logs: FoodLog[]) {
   }));
   localStorage.setItem("fittrack_logs", JSON.stringify(normalized));
   window.dispatchEvent(new CustomEvent("fittrack:logs-changed", { detail: normalized }));
+  window.dispatchEvent(new StorageEvent("storage", { key: "fittrack_logs", newValue: JSON.stringify(normalized) }));
 }
 
 export function saveLog(log: FoodLog) {

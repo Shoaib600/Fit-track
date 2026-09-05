@@ -100,7 +100,7 @@ export default function HistoryPage() {
                 </div>
                 <div className="flex flex-col gap-2">
                   {dayLogs.map((log) => {
-                    const isEditing = editing !== null && String(editing) === String(log.id) && draft;
+                    const isEditing = editing !== null && String(editing) === String(log.id) && draft !== null;
                     return (
                       <article key={log.id} className="rounded-xl border border-border bg-surface px-4 py-3">
                         {isEditing ? (
