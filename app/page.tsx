@@ -16,8 +16,8 @@ export default function RootPage() {
   }, [router]);
 
   return (
-    <div className="min-h-dvh flex items-center justify-center">
-      <div className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+    <div className="min-h-dvh flex items-center justify-center" aria-label="Opening FitTrack">
+      <p className="text-sm text-text-muted">Opening FitTrack…</p>
     </div>
   );
 }
