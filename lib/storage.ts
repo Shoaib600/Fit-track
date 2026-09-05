@@ -36,8 +36,18 @@ export function getLogs(): FoodLog[] {
 }
 
 function publishLogs(logs: FoodLog[]) {
-  localStorage.setItem("fittrack_logs", JSON.stringify(logs));
-  window.dispatchEvent(new CustomEvent("fittrack:logs-changed", { detail: logs }));
+  if (typeof window === "undefined") return;
+  const normalized = logs.map((log) => ({
+    ...log,
+    id: String(log.id),
+    calories: Number(log.calories) || 0,
+    protein: Number(log.protein) || 0,
+    carbs: Number(log.carbs) || 0,
+    fat: Number(log.fat) || 0,
+    quantity: Number(log.quantity) || 0,
+  }));
+  localStorage.setItem("fittrack_logs", JSON.stringify(normalized));
+  window.dispatchEvent(new CustomEvent("fittrack:logs-changed", { detail: normalized }));
 }
 
 export function saveLog(log: FoodLog) {

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -30,15 +31,15 @@ export default function SignupPage() {
     users[email] = { password, name: email.split("@")[0], createdAt: Date.now() };
     localStorage.setItem("fittrack_users", JSON.stringify(users));
     localStorage.setItem("fittrack_user", JSON.stringify({ email, name: email.split("@")[0] }));
-    router.push("/home");
+    router.push("/onboarding");
   };
 
   return (
     <div className="min-h-dvh flex flex-col justify-center px-6 py-10">
       <div className="mx-auto w-full max-w-sm">
         <div className="mb-10 text-center">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-2xl bg-accent-soft flex items-center justify-center">
-            <span className="text-2xl">🌿</span>
+          <div className="mx-auto mb-4 flex size-12 items-center justify-center overflow-hidden rounded-2xl bg-accent-soft">
+            <Image src="/fittrack-logo-small.png" alt="FitTrack logo" width={48} height={48} priority sizes="48px" className="size-12 object-cover" />
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">Create your account</h1>
           <p className="mt-1 text-sm text-text-secondary">Takes under a minute</p>

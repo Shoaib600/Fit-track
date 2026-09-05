@@ -53,8 +53,8 @@ export default function HistoryPage() {
 
   const handleDelete = (id: string) => {
     const normalizedId = String(id);
-    deleteLog(normalizedId);
     setLogs((current) => current.filter((log) => String(log.id) !== normalizedId));
+    deleteLog(normalizedId);
     if (String(editing) === normalizedId) cancelEditing();
   };
 

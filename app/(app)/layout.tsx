@@ -8,13 +8,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!localStorage.getItem("fittrack_user")) {
+    const user = localStorage.getItem("fittrack_user");
+    const hasCompletedOnboarding = localStorage.getItem("fittrack_onboarding_complete") === "true";
+
+    if (!user) {
       router.replace("/login");
       return;
     }
 
-    // Do not prefetch every screen on mount. It competes with hydration and
-    // makes the first tap feel delayed on slower mobile connections.
+    if (!hasCompletedOnboarding) {
+      router.replace("/onboarding");
+    }
   }, [router]);
 
   return (
