@@ -1,9 +1,11 @@
-const CACHE_NAME = "fittrack-v2";
-const APP_SHELL = ["/", "/home", "/icon.svg"];
+const CACHE_NAME = "fittrack-v4";
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
+self.addEventListener("install", () => {
   self.skipWaiting();
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
@@ -14,7 +16,5 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
-});
+// Keep navigation and API requests on the network so clicks and saves never wait
+// behind a stale service-worker response or a slow cache fallback.

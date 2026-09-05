@@ -7,7 +7,13 @@ export const metadata: Metadata = {
   description: "Daily calorie and macro tracking",
   applicationName: "FitTrack",
   manifest: "/manifest.webmanifest",
-  icons: { icon: "/icon.svg", apple: "/icon.svg" },
+  icons: {
+    icon: [
+      { url: "/fittrack-logo.png", type: "image/png", sizes: "512x512" },
+      { url: "/fittrack-logo.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: "/fittrack-logo.png",
+  },
 };
 
 export const viewport: Viewport = {

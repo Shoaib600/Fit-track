@@ -14,8 +14,8 @@ export default function HistoryPage() {
   }, []);
 
   const handleDelete = (id: string) => {
+    setLogs((current) => current.filter((log) => log.id !== id));
     deleteLog(id);
-    setLogs(getLogs());
   };
 
   const startEditing = (log: FoodLog) => {
