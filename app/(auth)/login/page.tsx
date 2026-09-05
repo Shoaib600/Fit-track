@@ -33,7 +33,7 @@ export default function LoginPage() {
       <div className="mx-auto w-full max-w-sm">
         <div className="mb-10 text-center">
           <div className="mx-auto mb-4 flex size-12 items-center justify-center overflow-hidden rounded-2xl bg-accent-soft">
-            <Image src="/fittrack-logo.png" alt="FitTrack logo" width={48} height={48} priority sizes="48px" className="size-12 object-cover" />
+            <Image src="/fittrack-logo-small.png" alt="FitTrack logo" width={48} height={48} priority sizes="48px" className="size-12 object-cover" />
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
           <p className="mt-1 text-sm text-text-secondary">Log in to keep your streak going</p>

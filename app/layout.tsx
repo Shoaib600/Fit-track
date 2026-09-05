@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
-      { url: "/fittrack-logo.png", type: "image/png", sizes: "512x512" },
+      { url: "/fittrack-logo-small.png", type: "image/png", sizes: "192x192" },
       { url: "/fittrack-logo.png", type: "image/png", sizes: "192x192" },
     ],
     apple: "/fittrack-logo.png",
