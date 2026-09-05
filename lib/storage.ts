@@ -30,6 +30,11 @@ export function saveLog(log: FoodLog) {
   localStorage.setItem("fittrack_logs", JSON.stringify(logs));
 }
 
+export function updateLog(id: string, updates: Partial<Omit<FoodLog, "id" | "timestamp">>) {
+  const logs = getLogs().map((log) => (log.id === id ? { ...log, ...updates } : log));
+  localStorage.setItem("fittrack_logs", JSON.stringify(logs));
+}
+
 export function deleteLog(id: string) {
   const logs = getLogs().filter((l) => l.id !== id);
   localStorage.setItem("fittrack_logs", JSON.stringify(logs));

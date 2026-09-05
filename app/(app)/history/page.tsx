@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLogs, deleteLog, type FoodLog } from "@/lib/storage";
+import { Pencil, Trash2, Check, X } from "lucide-react";
+import { getLogs, deleteLog, updateLog, type FoodLog } from "@/lib/storage";
 
 export default function HistoryPage() {
   const [logs, setLogs] = useState<FoodLog[]>([]);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [draft, setDraft] = useState<Partial<FoodLog>>({});
 
   useEffect(() => {
     setLogs(getLogs());
@@ -13,6 +16,26 @@ export default function HistoryPage() {
   const handleDelete = (id: string) => {
     deleteLog(id);
     setLogs(getLogs());
+  };
+
+  const startEditing = (log: FoodLog) => {
+    setEditing(log.id);
+    setDraft({ name: log.name, calories: log.calories, protein: log.protein, carbs: log.carbs, fat: log.fat, quantity: log.quantity, meal: log.meal });
+  };
+
+  const handleUpdate = () => {
+    if (!editing || !draft.name?.trim()) return;
+    updateLog(editing, {
+      name: draft.name.trim(),
+      calories: Number(draft.calories) || 0,
+      protein: Number(draft.protein) || 0,
+      carbs: Number(draft.carbs) || 0,
+      fat: Number(draft.fat) || 0,
+      quantity: Number(draft.quantity) || 0,
+      meal: draft.meal as FoodLog["meal"],
+    });
+    setLogs(getLogs());
+    setEditing(null);
   };
 
   // Group by date
@@ -49,25 +72,24 @@ export default function HistoryPage() {
                 </div>
                 <div className="space-y-2">
                   {dayLogs.map((log) => (
-                    <div
-                      key={log.id}
-                      className="flex items-center justify-between rounded-xl bg-surface border border-border px-4 py-3"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm truncate">{log.name}</p>
-                        <p className="text-xs text-text-muted">
-                          {log.meal} · {log.quantity}g · P{Math.round(log.protein)} C{Math.round(log.carbs)} F{Math.round(log.fat)}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium">{Math.round(log.calories)}</span>
-                        <button
-                          onClick={() => handleDelete(log.id)}
-                          className="text-xs text-red-400 hover:text-red-300"
-                        >
-                          ✕
-                        </button>
-                      </div>
+                    <div key={log.id} className="rounded-xl bg-surface border border-border px-4 py-3">
+                      {editing === log.id ? (
+                        <div className="flex flex-col gap-3">
+                          <input aria-label="Food name" value={draft.name || ""} onChange={(e) => setDraft({ ...draft, name: e.target.value })} className="w-full rounded-lg border border-border bg-surface-2 px-3 py-2 text-sm outline-none focus:border-accent" />
+                          <div className="grid grid-cols-2 gap-2">
+                            {([['calories', 'Calories'], ['protein', 'Protein'], ['carbs', 'Carbs'], ['fat', 'Fat'], ['quantity', 'Quantity (g)']] as const).map(([key, label]) => (
+                              <label key={key} className="text-[11px] text-text-muted">{label}<input type="number" value={draft[key] ?? ""} onChange={(e) => setDraft({ ...draft, [key]: Number(e.target.value) })} className="mt-1 w-full rounded-lg border border-border bg-surface-2 px-2 py-1.5 text-sm text-text-primary outline-none focus:border-accent" /></label>
+                            ))}
+                            <label className="text-[11px] text-text-muted">Meal<select value={draft.meal} onChange={(e) => setDraft({ ...draft, meal: e.target.value as FoodLog["meal"] })} className="mt-1 w-full rounded-lg border border-border bg-surface-2 px-2 py-1.5 text-sm text-text-primary outline-none"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option></select></label>
+                          </div>
+                          <div className="flex justify-end gap-2"><button type="button" aria-label="Cancel edit" onClick={() => setEditing(null)} className="interactive-control rounded-lg p-2 text-text-muted"><X /></button><button type="button" aria-label="Save edit" onClick={handleUpdate} className="interactive-control rounded-lg bg-accent p-2 text-ink"><Check /></button></div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{log.name}</p><p className="text-xs text-text-muted">{log.meal} · {log.quantity}g · P{Math.round(log.protein)} C{Math.round(log.carbs)} F{Math.round(log.fat)}</p></div>
+                          <div className="flex items-center gap-2"><span className="text-sm font-medium">{Math.round(log.calories)}</span><button type="button" aria-label={`Edit ${log.name}`} onClick={() => startEditing(log)} className="interactive-control rounded-lg p-2 text-text-secondary hover:text-accent"><Pencil /></button><button type="button" aria-label={`Delete ${log.name}`} onClick={() => handleDelete(log.id)} className="interactive-control rounded-lg p-2 text-red-400 hover:text-red-300"><Trash2 /></button></div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

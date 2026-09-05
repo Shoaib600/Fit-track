@@ -1,9 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
   title: "FitTrack",
   description: "Daily calorie and macro tracking",
+  applicationName: "FitTrack",
+  manifest: "/manifest.webmanifest",
+  icons: { icon: "/icon.svg", apple: "/icon.svg" },
 };
 
 export const viewport: Viewport = {
@@ -21,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-dvh bg-background text-text-primary antialiased">
+        <ServiceWorkerRegister />
         {children}
       </body>
     </html>
