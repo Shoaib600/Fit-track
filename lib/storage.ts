@@ -18,51 +18,21 @@ export function getToday(): string {
 export function getLogs(): FoodLog[] {
   if (typeof window === "undefined") return [];
   try {
-    const value = JSON.parse(localStorage.getItem("fittrack_logs") || "[]");
-    if (!Array.isArray(value)) return [];
-    return value.map((log) => ({
-      ...log,
-      id: String(log.id),
-      timestamp: Number(log.timestamp) || 0,
-      calories: Number(log.calories) || 0,
-      protein: Number(log.protein) || 0,
-      carbs: Number(log.carbs) || 0,
-      fat: Number(log.fat) || 0,
-      quantity: Number(log.quantity) || 0,
-    })) as FoodLog[];
+    return JSON.parse(localStorage.getItem("fittrack_logs") || "[]");
   } catch {
     return [];
   }
 }
 
-function publishLogs(logs: FoodLog[]) {
-  if (typeof window === "undefined") return;
-  const normalized = logs.map((log) => ({
-    ...log,
-    id: String(log.id),
-    calories: Number(log.calories) || 0,
-    protein: Number(log.protein) || 0,
-    carbs: Number(log.carbs) || 0,
-    fat: Number(log.fat) || 0,
-    quantity: Number(log.quantity) || 0,
-  }));
-  localStorage.setItem("fittrack_logs", JSON.stringify(normalized));
-  window.dispatchEvent(new CustomEvent("fittrack:logs-changed", { detail: normalized }));
-  window.dispatchEvent(new StorageEvent("storage", { key: "fittrack_logs", newValue: JSON.stringify(normalized) }));
-}
-
 export function saveLog(log: FoodLog) {
-  publishLogs([log, ...getLogs()]);
-}
-
-export function updateLog(id: string, updates: Partial<Omit<FoodLog, "id" | "timestamp">>) {
-  const normalizedId = String(id);
-  publishLogs(getLogs().map((log) => (String(log.id) === normalizedId ? { ...log, ...updates } : log)));
+  const logs = getLogs();
+  logs.unshift(log);
+  localStorage.setItem("fittrack_logs", JSON.stringify(logs));
 }
 
 export function deleteLog(id: string) {
-  const normalizedId = String(id);
-  publishLogs(getLogs().filter((log) => String(log.id) !== normalizedId));
+  const logs = getLogs().filter((l) => l.id !== id);
+  localStorage.setItem("fittrack_logs", JSON.stringify(logs));
 }
 
 export function getTodayTotals() {
