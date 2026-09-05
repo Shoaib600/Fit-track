@@ -64,7 +64,7 @@ export default function HomePage() {
 
       <Link
         href="/scan"
-        className="flex items-center justify-center gap-2 w-full rounded-xl bg-accent py-3.5 font-semibold text-ink active:scale-[0.98] transition mb-6"
+        className="interactive-control mb-6 flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3.5 font-semibold text-ink"
       >
         + Log Food
       </Link>

@@ -27,7 +27,7 @@ export default function BottomNav() {
               <Link
                 key={tab.href}
                 href={tab.href}
-                className="relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-ink shadow-lg shadow-accent/30 active:scale-95 transition"
+                className="interactive-control relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-ink shadow-lg shadow-accent/30"
               >
                 <Icon className="h-6 w-6" strokeWidth={2.5} />
               </Link>
@@ -39,7 +39,7 @@ export default function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={clsx(
-                "flex flex-col items-center gap-0.5 px-3 py-1 text-[11px] transition",
+                "interactive-control flex flex-col items-center gap-0.5 rounded-lg px-3 py-1 text-[11px]",
                 active ? "text-accent" : "text-text-muted"
               )}
             >

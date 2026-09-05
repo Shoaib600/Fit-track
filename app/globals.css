@@ -14,6 +14,35 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+@layer utilities {
+  .interactive-control {
+    touch-action: manipulation;
+    transition: transform 120ms ease, background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+  }
+
+  .interactive-control:hover:not(:disabled) {
+    box-shadow: 0 8px 20px -14px rgb(255 255 255 / 0.7);
+  }
+
+  .interactive-control:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  .interactive-control:focus-visible {
+    outline: 2px solid var(--accent, #b8ff3d);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 /* Hide scrollbar but keep functionality */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

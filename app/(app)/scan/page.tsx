@@ -15,6 +15,7 @@ export default function ScanPage() {
   const [manual, setManual] = useState({ calories: "", protein: "", carbs: "", fat: "" });
   const [meal, setMeal] = useState<Meal>("Lunch");
   const [aiLoading, setAiLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [aiError, setAiError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -50,6 +51,7 @@ export default function ScanPage() {
   };
 
   const handleCalculate = async () => {
+    if (aiLoading) return;
     setAiError("");
     setMessage("");
     const exact = findExactFood(query);
@@ -89,6 +91,7 @@ export default function ScanPage() {
   };
 
   const handleSave = () => {
+    if (saving) return;
     const cal = parseFloat(manual.calories) || 0;
     const pro = parseFloat(manual.protein) || 0;
     const carb = parseFloat(manual.carbs) || 0;
@@ -100,6 +103,7 @@ export default function ScanPage() {
       return;
     }
 
+    setSaving(true);
     saveLog({
       id: Date.now().toString(),
       name: query.trim(),
@@ -114,7 +118,7 @@ export default function ScanPage() {
     });
 
     setMessage("Saved! ✓");
-    setTimeout(() => router.push("/home"), 600);
+    router.push("/home");
   };
 
   return (
@@ -150,7 +154,7 @@ export default function ScanPage() {
                 key={f.id}
                 type="button"
                 onClick={() => handleSelect(f)}
-                className="w-full text-left px-4 py-2.5 hover:bg-surface-2 border-b border-border last:border-0 transition"
+                className="interactive-control w-full text-left px-4 py-2.5 hover:bg-surface-2 border-b border-border last:border-0"
               >
                 <p className="text-sm font-medium">{f.name}</p>
                 <p className="text-xs text-text-muted">
@@ -176,7 +180,7 @@ export default function ScanPage() {
           type="button"
           onClick={handleCalculate}
           disabled={aiLoading || !query.trim()}
-          className="w-full rounded-xl bg-accent py-3.5 font-semibold text-ink disabled:opacity-50 active:scale-[0.98] transition"
+          className="interactive-control w-full rounded-xl bg-accent py-3.5 font-semibold text-ink disabled:cursor-not-allowed disabled:opacity-50"
         >
           {aiLoading ? "Estimating..." : "Calculate"}
         </button>
@@ -232,7 +236,7 @@ export default function ScanPage() {
                 key={m}
                 type="button"
                 onClick={() => setMeal(m)}
-                className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${
+                className={`interactive-control flex-1 rounded-lg py-2 text-xs font-medium ${
                   meal === m ? "bg-accent text-ink" : "bg-surface-2 text-text-secondary"
                 }`}
               >
@@ -244,9 +248,10 @@ export default function ScanPage() {
           <button
             type="button"
             onClick={handleSave}
-            className="w-full rounded-xl bg-accent/90 py-3.5 font-semibold text-ink active:scale-[0.98] transition mt-2"
+            disabled={saving}
+            className="interactive-control mt-2 w-full rounded-xl bg-accent/90 py-3.5 font-semibold text-ink disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Save & add to log
+            {saving ? "Saving..." : "Save & add to log"}
           </button>
         </div>
       </div>
