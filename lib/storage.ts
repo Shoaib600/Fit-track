@@ -18,7 +18,8 @@ export function getToday(): string {
 export function getLogs(): FoodLog[] {
   if (typeof window === "undefined") return [];
   try {
-    return JSON.parse(localStorage.getItem("fittrack_logs") || "[]");
+    const value = JSON.parse(localStorage.getItem("fittrack_logs") || "[]");
+    return Array.isArray(value) ? value : [];
   } catch {
     return [];
   }

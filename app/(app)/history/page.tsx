@@ -51,7 +51,8 @@ export default function HistoryPage() {
   };
 
   const handleDelete = (id: string) => {
-    setLogs((current) => current.filter((log) => log.id !== id));
+    const nextLogs = logs.filter((log) => log.id !== id);
+    setLogs(nextLogs);
     deleteLog(id);
     if (editing === id) cancelEditing();
   };

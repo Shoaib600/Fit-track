@@ -4,11 +4,14 @@ import { useEffect } from "react";
 
 export default function ServiceWorkerRegister() {
   useEffect(() => {
-    if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
-      navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).then((registration) => {
-        registration.update().catch(() => undefined);
-        if (registration.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
-      }).catch(() => undefined);
+    if (!("serviceWorker" in navigator)) return;
+
+    // Remove older workers that could intercept clicks/navigation with stale code.
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => registration.unregister());
+    }).catch(() => undefined);
+    if ("caches" in window) {
+      caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key)))).catch(() => undefined);
     }
   }, []);
 
