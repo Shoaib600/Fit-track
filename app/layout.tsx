@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/fittrack-logo-small.png", type: "image/png", sizes: "192x192" },
-      { url: "/fittrack-logo-small.png", type: "image/png", sizes: "192x192" },
+      { url: "/fittrack-logo.png", type: "image/png", sizes: "512x512" },
     ],
     apple: "/fittrack-logo-small.png",
   },
