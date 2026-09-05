@@ -69,7 +69,7 @@ export default function HistoryPage() {
       quantity: Number(draft.quantity) || 0,
       meal: draft.meal,
     };
-    setLogs((current) => current.map((log) => (log.id === editing ? { ...log, ...updates } : log)));
+    setLogs((current) => current.map((log) => (String(log.id) === String(editing) ? { ...log, ...updates } : log)));
     updateLog(editing, updates);
     cancelEditing();
   };
@@ -100,7 +100,7 @@ export default function HistoryPage() {
                 </div>
                 <div className="flex flex-col gap-2">
                   {dayLogs.map((log) => {
-                    const isEditing = editing === log.id && draft;
+                    const isEditing = editing !== null && String(editing) === String(log.id) && draft;
                     return (
                       <article key={log.id} className="rounded-xl border border-border bg-surface px-4 py-3">
                         {isEditing ? (
