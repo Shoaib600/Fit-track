@@ -30,14 +30,24 @@ export function saveLog(log: FoodLog) {
   localStorage.setItem("fittrack_logs", JSON.stringify(logs));
 }
 
+function notifyLogsChanged() {
+  window.dispatchEvent(new Event("fittrack:logs-changed"));
+}
+
 export function updateLog(id: string, updates: Partial<Omit<FoodLog, "id">>) {
-  const logs = getLogs().map((log) => (log.id === id ? { ...log, ...updates } : log));
+  const normalizedId = String(id);
+  const logs = getLogs().map((log) =>
+    String(log.id) === normalizedId ? { ...log, ...updates, id: normalizedId } : log
+  );
   localStorage.setItem("fittrack_logs", JSON.stringify(logs));
+  notifyLogsChanged();
 }
 
 export function deleteLog(id: string) {
-  const logs = getLogs().filter((l) => l.id !== id);
+  const normalizedId = String(id);
+  const logs = getLogs().filter((log) => String(log.id) !== normalizedId);
   localStorage.setItem("fittrack_logs", JSON.stringify(logs));
+  notifyLogsChanged();
 }
 
 export function getTodayTotals() {

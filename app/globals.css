@@ -15,6 +15,27 @@ body {
 }
 
 @layer utilities {
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  button:not(:disabled),
+  a {
+    transition: transform 120ms ease, background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+  }
+
+  button:not(:disabled):active,
+  a:active {
+    transform: scale(0.98);
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--accent, #b8ff3d);
+    outline-offset: 3px;
+  }
+
   .interactive-control {
     touch-action: manipulation;
     transition: transform 120ms ease, background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
