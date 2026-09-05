@@ -24,20 +24,21 @@ export function getLogs(): FoodLog[] {
   }
 }
 
-export function saveLog(log: FoodLog) {
-  const logs = getLogs();
-  logs.unshift(log);
+function publishLogs(logs: FoodLog[]) {
   localStorage.setItem("fittrack_logs", JSON.stringify(logs));
+  window.dispatchEvent(new CustomEvent("fittrack:logs-changed", { detail: logs }));
+}
+
+export function saveLog(log: FoodLog) {
+  publishLogs([log, ...getLogs()]);
 }
 
 export function updateLog(id: string, updates: Partial<Omit<FoodLog, "id" | "timestamp">>) {
-  const logs = getLogs().map((log) => (log.id === id ? { ...log, ...updates } : log));
-  localStorage.setItem("fittrack_logs", JSON.stringify(logs));
+  publishLogs(getLogs().map((log) => (log.id === id ? { ...log, ...updates } : log)));
 }
 
 export function deleteLog(id: string) {
-  const logs = getLogs().filter((l) => l.id !== id);
-  localStorage.setItem("fittrack_logs", JSON.stringify(logs));
+  publishLogs(getLogs().filter((l) => l.id !== id));
 }
 
 export function getTodayTotals() {

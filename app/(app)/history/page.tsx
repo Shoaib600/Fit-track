@@ -10,7 +10,14 @@ export default function HistoryPage() {
   const [draft, setDraft] = useState<Partial<FoodLog>>({});
 
   useEffect(() => {
-    setLogs(getLogs());
+    const syncLogs = () => setLogs(getLogs());
+    syncLogs();
+    window.addEventListener("fittrack:logs-changed", syncLogs);
+    window.addEventListener("storage", syncLogs);
+    return () => {
+      window.removeEventListener("fittrack:logs-changed", syncLogs);
+      window.removeEventListener("storage", syncLogs);
+    };
   }, []);
 
   const handleDelete = (id: string) => {
